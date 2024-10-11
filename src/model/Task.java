@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Objects;
 
 public class Task {
@@ -18,6 +20,10 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
+    }
+
+    public Task(int id, String name, String description) {
+        this(id, name, description, Status.NEW);
     }
 
     public String getName() {
@@ -76,7 +82,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "model.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
