@@ -27,7 +27,7 @@ public class Main {
         inMemoryTaskManager.addTask(new Task("Придумать список дел после перезда", "Список в заметках"));
 
 
-        Epic moving = new Epic("Переезд", "Нужно успеть до конца месяца");
+        Epic moving = new Epic(10, "Переезд", "Нужно успеть до конца месяца", Status.NEW);
         inMemoryTaskManager.addEpic(moving);
         Subtask packKitchen = new Subtask("Упаковать кухню", "В отдельные коробки",
                 moving.getId());
