@@ -53,11 +53,11 @@ class InMemoryHistoryManagerTest {
 
     @Test
     public void getHistoryShouldReturnOldEpicAfterUpdate() {
-        Epic flatRenovation = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск", Status.NEW);
+        Epic flatRenovation = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск");
         taskManager.addEpic(flatRenovation);
         taskManager.getEpicByID(flatRenovation.getId());
-        taskManager.updateEpic(new Epic(flatRenovation.getId(), "Новое имя", "новое описание",
-                Status.IN_PROGRESS));
+        taskManager.updateEpic(new Epic(flatRenovation.getId(), "Новое имя", "новое описание"
+               ));
         List<Task> epics = taskManager.getHistory();
         Epic oldEpic = (Epic) epics.getFirst();
         assertEquals(flatRenovation.getName(), oldEpic.getName(),
@@ -68,7 +68,7 @@ class InMemoryHistoryManagerTest {
 
     @Test
     public void getHistoryShouldReturnOldSubtaskAfterUpdate() {
-        Epic flatRenovation = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск", Status.NEW);
+        Epic flatRenovation = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск");
         taskManager.addEpic(flatRenovation);
         Subtask flatRenovationSubtask3 = new Subtask("Заказать книжный шкаф", "Из темного дерева",
                 flatRenovation.getId());

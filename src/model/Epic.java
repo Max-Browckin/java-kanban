@@ -6,13 +6,9 @@ import java.util.Objects;
 public class Epic extends Task {
     private ArrayList<Subtask> subtaskList = new ArrayList<>();
 
-    public Epic(int i, String name, String description, Status aNew) {
-        super(name, description);
-    }
-
     public Epic(int id, String name, String description) {
         super(id, name, description);
-        this.setStatus(Status.NEW);
+        // Статус NEW устанавливается по умолчанию в конструкторе родительского класса Task
     }
 
     public void addSubtask(Subtask subtask) {
@@ -33,12 +29,12 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "model.Epic{" +
-                "name= " + getName() + '\'' +
-                ", description = " + getDescription() + '\'' +
+        return "Epic{" +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", id=" + getId() +
-                ", subtaskList.size = " + subtaskList.size() +
-                ", status = " + getStatus() +
+                ", subtaskList.size=" + subtaskList.size() +
+                ", status=" + getStatus() +
                 '}';
     }
 
@@ -58,4 +54,4 @@ public class Epic extends Task {
     public int hashCode() {
         return Objects.hash(getId());
     }
-    }
+}

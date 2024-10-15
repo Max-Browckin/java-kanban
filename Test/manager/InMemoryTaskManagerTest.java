@@ -38,7 +38,7 @@ class InMemoryTaskManagerTest {
     @Test
     void addNewEpicAndSubtasks() {
         //проверяем, что InMemoryTaskManager добавляет эпики и подзадачи и может найти их по id;
-        final Epic flatRenovation = taskManager.addEpic(new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск", Status.IN_PROGRESS));
+        final Epic flatRenovation = taskManager.addEpic(new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск"));
         final Subtask flatRenovationSubtask1 = taskManager.addSubtask(new Subtask("Поклеить обои",
                 "Обязательно светлые!", flatRenovation.getId()));
         final Subtask flatRenovationSubtask2 = taskManager.addSubtask(new Subtask("Установить новую технику",
@@ -78,7 +78,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void updateSubtaskShouldReturnSubtaskWithTheSameId() {
-        final Epic epic = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск", Status.IN_PROGRESS);
+        final Epic epic = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск");
         taskManager.addEpic(epic);
         final Subtask expected = new Subtask("имя", "описание", epic.getId());
         taskManager.addSubtask(expected);
@@ -99,7 +99,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void deleteEpicsShouldReturnEmptyList() {
-        taskManager.addEpic(new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск", Status.IN_PROGRESS));
+        taskManager.addEpic(new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск"));
         taskManager.deleteEpics();
         List<Epic> epics = taskManager.getEpics();
         assertTrue(epics.isEmpty(), "После удаления эпиков список должен быть пуст.");
@@ -107,7 +107,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void deleteSubtasksShouldReturnEmptyList() {
-        Epic flatRenovation = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск", Status.IN_PROGRESS);
+        Epic flatRenovation = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск");
         taskManager.addEpic(flatRenovation);
         taskManager.addSubtask(new Subtask("Поклеить обои", "Обязательно светлые!",
                 flatRenovation.getId()));
@@ -130,9 +130,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void EpicsWithEqualIdShouldBeEqual() {
-        Epic epic1 = new Epic(10, "Сделать ремонт", "Уложиться в 2 миллиона", Status.NEW);
-        Epic epic2 = new Epic(10, "Подготовиться к собеседованию", "1 июля в 11:00",
-                Status.IN_PROGRESS);
+        Epic epic1 = new Epic(10, "Сделать ремонт", "Уложиться в 2 миллиона");
+        Epic epic2 = new Epic(10, "Подготовиться к собеседованию", "1 июля в 11:00");
         assertEquals(epic1, epic2,
                 "Ошибка! Наследники класса Task должны быть равны друг другу, если равен их id;");
     }
