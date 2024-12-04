@@ -41,13 +41,13 @@ class InMemoryHistoryManagerTest {
         taskManager.addTask(washFloor);
         taskManager.getTaskByID(washFloor.getId());
 
-        // Update the task
+
         Task updatedTask = new Task(washFloor.getId(), "Не забыть помыть полы",
                 "Можно и без средства", Status.IN_PROGRESS);
         taskManager.updateTask(updatedTask);
 
         List<Task> tasks = taskManager.getHistory();
-        Task oldTask = tasks.get(tasks.size() - 1); // Get the last accessed task
+        Task oldTask = tasks.get(tasks.size() - 1);
         assertEquals(washFloor.getName(), oldTask.getName(), "В истории не сохранилась старая версия задачи");
         assertEquals(washFloor.getDescription(), oldTask.getDescription(),
                 "В истории не сохранилась старая версия задачи");
@@ -62,7 +62,7 @@ class InMemoryHistoryManagerTest {
                 flatRenovation.getId());
         taskManager.addSubtask(flatRenovationSubtask3);
 
-        // Access the subtask to record it in history
+
         taskManager.getSubtaskByID(flatRenovationSubtask3.getId());
 
         // Update the subtask
@@ -77,7 +77,7 @@ class InMemoryHistoryManagerTest {
             System.out.println(task.getId() + ": " + task.getName() + " (" + task.getClass().getSimpleName() + ")");
         }
 
-        // Check the last accessed task
+
         Task lastAccessedTask = subtasks.get(subtasks.size() - 1);
         if (lastAccessedTask instanceof Subtask) {
             Subtask oldSubtask = (Subtask) lastAccessedTask;
