@@ -1,7 +1,5 @@
 package manager;
 
-
-
 import model.Task;
 
 import java.util.*;
@@ -11,6 +9,36 @@ public class InMemoryHistoryManager implements HistoryManager {
         private final Map<Integer, Node> table = new HashMap<>();
         private Node head;
         private Node tail;
+
+        private static class Node {
+            private Task task;
+            private Node prev;
+            private Node next;
+
+            public Task getTask() {
+                return task;
+            }
+
+            public void setTask(Task task) {
+                this.task = task;
+            }
+
+            public Node getPrev() {
+                return prev;
+            }
+
+            public void setPrev(Node prev) {
+                this.prev = prev;
+            }
+
+            public Node getNext() {
+                return next;
+            }
+
+            public void setNext(Node next) {
+                this.next = next;
+            }
+        }
 
         private void linkLast(Task task) {
             Node element = new Node();
@@ -93,4 +121,5 @@ public class InMemoryHistoryManager implements HistoryManager {
         return list.getTasks();
     }
 }
+
 
