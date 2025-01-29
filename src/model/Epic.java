@@ -1,5 +1,7 @@
 package model;
 
+import tasktype.TaskType;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -53,5 +55,10 @@ public class Epic extends Task {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import tasktype.TaskType;
+
 import java.util.Objects;
 
 public class Task {
@@ -15,7 +17,9 @@ public class Task {
         this.description = description;
         this.status = status;
     }
-
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
 
     public Task(String name, String description) {
         this.name = name;
