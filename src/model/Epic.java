@@ -10,7 +10,6 @@ public class Epic extends Task {
 
     public Epic(int id, String name, String description) {
         super(id, name, description);
-        // Статус NEW устанавливается по умолчанию в конструкторе родительского класса Task
     }
 
     public void addSubtask(Subtask subtask) {

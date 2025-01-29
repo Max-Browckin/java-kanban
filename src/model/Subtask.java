@@ -37,6 +37,7 @@ public class Subtask extends Task {
         Subtask subtask = (Subtask) o;
         return epicID == subtask.epicID;
     }
+
     @Override
     public TaskType getType() {
         return TaskType.SUBTASK;
