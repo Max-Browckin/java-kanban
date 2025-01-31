@@ -1,5 +1,7 @@
 package model;
 
+import tasktype.TaskType;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -8,7 +10,6 @@ public class Epic extends Task {
 
     public Epic(int id, String name, String description) {
         super(id, name, description);
-        // Статус NEW устанавливается по умолчанию в конструкторе родительского класса Task
     }
 
     public void addSubtask(Subtask subtask) {
@@ -53,5 +54,10 @@ public class Epic extends Task {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 }

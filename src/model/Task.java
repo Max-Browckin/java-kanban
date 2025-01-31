@@ -1,5 +1,7 @@
 package model;
 
+import tasktype.TaskType;
+
 import java.util.Objects;
 
 public class Task {
@@ -8,11 +10,16 @@ public class Task {
     private int id;
     private Status status;
 
+
     public Task(int id, String name, String description, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
     public Task(String name, String description) {
@@ -21,9 +28,19 @@ public class Task {
         this.status = Status.NEW;
     }
 
+
     public Task(int id, String name, String description) {
         this(id, name, description, Status.NEW);
     }
+
+
+    public Task(Task task) {
+        this.id = task.id;
+        this.name = task.name;
+        this.description = task.description;
+        this.status = task.status;
+    }
+
 
     public String getName() {
         return name;
@@ -67,25 +84,16 @@ public class Task {
 
     @Override
     public int hashCode() {
-        int hash = 17;
-        if (name != null) {
-            hash = hash + name.hashCode();
-        }
-        hash = hash * 31;
-        if (description != null) {
-            hash = hash + description.hashCode();
-        }
-        return hash;
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "model.Task{" +
+        return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status=" + status +
                 '}';
     }
-
 }

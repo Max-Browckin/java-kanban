@@ -1,5 +1,7 @@
 package model;
 
+import tasktype.TaskType;
+
 public class Subtask extends Task {
     private final int epicID;
 
@@ -27,11 +29,17 @@ public class Subtask extends Task {
                 ", status=" + getStatus() +
                 '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subtask subtask = (Subtask) o;
         return epicID == subtask.epicID;
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.SUBTASK;
     }
 }
