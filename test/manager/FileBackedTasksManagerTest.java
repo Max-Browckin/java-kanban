@@ -49,4 +49,18 @@ public class FileBackedTasksManagerTest {
         assertEquals(1, loadedManager.getEpics().size());
         assertEquals(1, loadedManager.getSubtasks().size());
     }
+
+    @Test
+    public void deleteTaskShouldRemoveTaskFromFile() throws IOException {
+        File tempFile = File.createTempFile("test", ".csv");
+        tempFile.deleteOnExit();
+        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
+
+        Task task = new Task("Test Task", "Description");
+        manager.addTask(task);
+        manager.deleteTaskByID(task.getId());
+
+        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
+        assertTrue(loadedManager.getTasks().isEmpty(), "Задача не была удалена из файла.");
     }
+}

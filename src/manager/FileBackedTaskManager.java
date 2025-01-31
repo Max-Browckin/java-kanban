@@ -79,6 +79,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
+    @Override
+    public void deleteTasks() {
+        super.deleteTasks();
+        save();
+    }
+
+    @Override
+    public void deleteEpics() {
+        super.deleteEpics();
+        save();
+    }
+
+    @Override
+    public void deleteSubtasks() {
+        super.deleteSubtasks();
+        save();
+    }
 
     public void save() {
         try (PrintWriter writer = new PrintWriter(file)) {
@@ -96,7 +113,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             throw new ManagerSaveException("Failed to save tasks to file", e);
         }
     }
-
 
     private String toString(Task task) {
         switch (task.getType()) {
