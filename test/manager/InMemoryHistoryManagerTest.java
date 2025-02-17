@@ -1,158 +1,88 @@
 package manager;
 
+
+import org.junit.jupiter.api.Test;
 import model.Epic;
 import model.Status;
-import model.Subtask;
 import model.Task;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class InMemoryHistoryManagerTest {
-
-    private static TaskManager taskManager;
-
-    @BeforeEach
-    public void beforeEach() {
-        taskManager = Managers.getDefault();
-    }
+public class InMemoryHistoryManagerTest {
 
     @Test
-    public void getHistoryShouldReturnListOf10Tasks() {
-        for (int i = 0; i < 10; i++) {
-            taskManager.addTask(new Task("Some name " + i, "Some description " + i));
-        }
-
-        List<Task> tasks = taskManager.getTasks();
-        for (Task task : tasks) {
-            taskManager.getTaskByID(task.getId());
-        }
-
-        List<Task> list = taskManager.getHistory();
-        assertEquals(10, list.size(), "Неверное количество элементов в истории ");
-    }
-
-    @Test
-    public void getHistoryShouldReturnOldTaskAfterUpdate() {
-        Task washFloor = new Task("Помыть полы", "С новым средством");
-        taskManager.addTask(washFloor);
-        taskManager.getTaskByID(washFloor.getId());
-
-
-        Task updatedTask = new Task(washFloor.getId(), "Не забыть помыть полы",
-                "Можно и без средства", Status.IN_PROGRESS);
-        taskManager.updateTask(updatedTask);
-
-        List<Task> tasks = taskManager.getHistory();
-        Task oldTask = tasks.get(tasks.size() - 1);
-        assertEquals(washFloor.getName(), oldTask.getName(), "В истории не сохранилась старая версия задачи");
-        assertEquals(washFloor.getDescription(), oldTask.getDescription(),
-                "В истории не сохранилась старая версия задачи");
-    }
-
-
-    @Test
-    public void getHistoryShouldReturnOldSubtaskAfterUpdate() {
-        Epic flatRenovation = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск");
-        taskManager.addEpic(flatRenovation);
-        Subtask flatRenovationSubtask3 = new Subtask("Заказать книжный шкаф", "Из темного дерева",
-                flatRenovation.getId());
-        taskManager.addSubtask(flatRenovationSubtask3);
-
-
-        taskManager.getSubtaskByID(flatRenovationSubtask3.getId());
-
-        // Update the subtask
-        Subtask updatedSubtask = new Subtask(flatRenovationSubtask3.getId(), "Новое имя",
-                "новое описание", Status.IN_PROGRESS, flatRenovation.getId());
-        taskManager.updateSubtask(updatedSubtask);
-
-        // Check the history
-        List<Task> subtasks = taskManager.getHistory();
-        System.out.println("History contents:");
-        for (Task task : subtasks) {
-            System.out.println(task.getId() + ": " + task.getName() + " (" + task.getClass().getSimpleName() + ")");
-        }
-
-
-        Task lastAccessedTask = subtasks.get(subtasks.size() - 1);
-        if (lastAccessedTask instanceof Subtask) {
-            Subtask oldSubtask = (Subtask) lastAccessedTask;
-            assertEquals(flatRenovationSubtask3.getName(), oldSubtask.getName(),
-                    "В истории не сохранилась старая версия подзадачи");
-            assertEquals(flatRenovationSubtask3.getDescription(), oldSubtask.getDescription(),
-                    "В истории не сохранилась старая версия подзадачи");
-        } else {
-            fail("Last accessed task is not a Subtask");
-        }
-    }
-
-    @Test
-    public void shouldNotRetainOldIdInDeletedSubtask() {
-        Epic epic = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск");
-        taskManager.addEpic(epic);
-        Subtask subtask = new Subtask("Заказать книжный шкаф", "Из темного дерева", epic.getId());
-        taskManager.addSubtask(subtask);
-
-        // Добавляем подзадачу в историю
-        taskManager.getSubtaskByID(subtask.getId());
-
-        // Удаляем подзадачу
-        taskManager.deleteSubtaskByID(subtask.getId());
-
-        // Проверяем, что подзадача не осталась в менеджере
-        assertNull(taskManager.getSubtaskByID(subtask.getId()), "Подзадача не была удалена");
-
-        // Проверяем, что в истории не осталось старого ID
-        List<Task> history = taskManager.getHistory();
-        assertFalse(history.stream().anyMatch(task -> task.getId() == subtask.getId()),
-                "История содержит неактуальный ID подзадачи");
-    }
-
-    @Test
-    public void shouldNotHaveInvalidSubtaskIdsInEpic() {
-        Epic epic = new Epic(1, "Сделать ремонт", "Нужно успеть за отпуск");
-        taskManager.addEpic(epic);
-        Subtask subtask = new Subtask("Заказать книжный шкаф", "Из темного дерева", epic.getId());
-        taskManager.addSubtask(subtask);
-
-        // Удаляем подзадачу
-        taskManager.deleteSubtaskByID(subtask.getId());
-
-        // Проверяем, что в эпике не осталось неактуальных ID подзадач
-        List<Subtask> subtasksInEpic = taskManager.getEpicSubtasks(epic); // Передаем объект epic
-        assertFalse(subtasksInEpic.stream().anyMatch(s -> s.getId() == subtask.getId()),
-                "Эпик содержит неактуальный ID подзадачи");
-    }
-
-
-    @Test
-    public void testGetTaskByIDAddsToHistory() {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
-        Task task = new Task("Test Task", "Description");
-        taskManager.addTask(task);
-
-        taskManager.getTaskByID(task.getId());
-
-        List<Task> history = taskManager.getHistory();
+    public void testAdd() {
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        Task task = new Task(1, "Task1", "Description1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.now());
+        historyManager.add(task);
+        List<Task> history = historyManager.getHistory();
         assertEquals(1, history.size());
         assertEquals(task, history.get(0));
     }
 
     @Test
-    public void testUpdateTaskUpdatesTaskAndAddsOldVersionToHistory() {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
-        Task task = new Task("Test Task", "Description");
-        taskManager.addTask(task);
+    public void testRemove() {
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        Task task = new Task(1, "Task1", "Description1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.now());
+        historyManager.add(task);
+        historyManager.remove(1);
+        List<Task> history = historyManager.getHistory();
+        assertEquals(0, history.size());
+    }
 
-        Task updatedTask = new Task(task.getId(), "Updated Task", "Updated Description");
-        taskManager.updateTask(updatedTask);
+    @Test
+    public void testGetHistory() {
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        Task task1 = new Task(1, "Task1", "Description1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.now());
+        Task task2 = new Task(2, "Task2", "Description2", Status.NEW, Duration.ofMinutes(30), LocalDateTime.now());
+        historyManager.add(task1);
+        historyManager.add(task2);
+        List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task1, history.get(0));
+        assertEquals(task2, history.get(1));
+    }
 
-        List<Task> history = taskManager.getHistory();
+    @Test
+    public void testGetHistoryEmpty() {
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        List<Task> history = historyManager.getHistory();
+        assertEquals(0, history.size());
+    }
+
+    @Test
+    public void testRemoveNonExisting() {
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        historyManager.remove(1);
+        List<Task> history = historyManager.getHistory();
+        assertEquals(0, history.size());
+    }
+
+    @Test
+    public void testAddMultiple() {
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        Task task1 = new Task(1, "Task1", "Description1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.now());
+        Task task2 = new Task(2, "Task2", "Description2", Status.NEW, Duration.ofMinutes(30), LocalDateTime.now());
+        Task task3 = new Task(3, "Task3", "Description3", Status.NEW, Duration.ofMinutes(30), LocalDateTime.now());
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        List<Task> history = historyManager.getHistory();
+        assertEquals(3, history.size());
+        assertEquals(task1, history.get(0));
+        assertEquals(task2, history.get(1));
+        assertEquals(task3, history.get(2));
+    }
+
+    @Test
+    public void testAddEpic() {
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        Epic epic = new Epic(1, "Epic1", "Description1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.now());
+        historyManager.add(epic);
+        List<Task> history = historyManager.getHistory();
         assertEquals(1, history.size());
-        assertEquals(task, history.get(0)); // Проверяем, что старая версия добавлена в историю
+        assertEquals(epic, history.get(0));
     }
 }

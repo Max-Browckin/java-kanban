@@ -5,7 +5,6 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -19,10 +18,16 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager() {
         this.historyManager = Managers.getDefaultHistory();
     }
+    private int getNextID() {
+        return nextID++;
+    }
 
     @Override
     public Task addTask(Task task) {
         validateTask(task);
+        if (isOverlapping(task)) {
+            throw new IllegalArgumentException("Task overlaps with existing task");
+        }
         task.setId(getNextID());
         tasks.put(task.getId(), task);
         return task;
@@ -42,6 +47,9 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException("Epic with ID " + subtask.getEpicID() + " does not exist.");
         }
         validateTask(subtask);
+        if (isOverlapping(subtask)) {
+            throw new IllegalArgumentException("Subtask overlaps with existing task");
+        }
         subtask.setId(getNextID());
         epic.addSubtask(subtask);
         subtasks.put(subtask.getId(), subtask);
@@ -188,15 +196,30 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getPrioritizedTasks() {
+        PriorityQueue<Task> priorityQueue = new PriorityQueue<>(Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())));
+
+        priorityQueue.addAll(tasks.values());
+        priorityQueue.addAll(subtasks.values());
+
         List<Task> prioritizedTasks = new ArrayList<>();
-        prioritizedTasks.addAll(tasks.values());
-        prioritizedTasks.addAll(subtasks.values());
-        prioritizedTasks.sort(Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())));
+        while (!priorityQueue.isEmpty()) {
+            prioritizedTasks.add(priorityQueue.poll());
+        }
+
         return prioritizedTasks;
     }
 
-    private int getNextID() {
-        return nextID++;
+    private boolean isOverlapping(Task newTask) {
+        return tasks.values().stream()
+                .anyMatch(existingTask -> isOverlapping(existingTask, newTask));
+    }
+
+    private boolean isOverlapping(Task t1, Task t2) {
+        if (t1.getStartTime() == null || t2.getStartTime() == null) {
+            return false;
+        }
+        return t1.getStartTime().isBefore(t2.getStartTime().plus(t2.getDuration())) &&
+                t2.getStartTime().isBefore(t1.getStartTime().plus(t1.getDuration()));
     }
 
     private void updateEpicStatus(Epic epic) {
@@ -228,6 +251,6 @@ public class InMemoryTaskManager implements TaskManager {
         if (task.getDescription() == null) {
             throw new IllegalArgumentException("Task description cannot be null.");
         }
-        // Additional validation can be added here
+
     }
 }

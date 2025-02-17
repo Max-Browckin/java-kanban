@@ -26,44 +26,39 @@ public class Main {
         Task packBoxes = new Task("Упаковать вещи", "В коробки и мешки", Duration.ofMinutes(30), now);
         taskManager.addTask(packBoxes);
 
-        Task packBoxesToUpdate = new Task(packBoxes.getId(), "Упаковать вещи быстро", "В коробки и мешки",
-                Status.IN_PROGRESS, Duration.ofMinutes(20), now.plusMinutes(30));
-        taskManager.updateTask(packBoxesToUpdate);
-
         Task createToDoList = new Task("Придумать список дел после перезда", "Список в заметках", Duration.ofMinutes(15), now.plusMinutes(50));
         taskManager.addTask(createToDoList);
 
         Epic moving = new Epic(10, "Переезд", "Нужно успеть до конца месяца");
         taskManager.addEpic(moving);
 
+
         Subtask packKitchen = new Subtask("Упаковать кухню", "В отдельные коробки", moving.getId(), Duration.ofMinutes(30), now.plusMinutes(10));
-        Subtask packBedroom = new Subtask("Упаковать спальню", "В большие коробки", moving.getId(), Duration.ofMinutes(45), now.plusMinutes(40));
+        Subtask packBedroom = new Subtask("Упаковать спальню", "В большие коробки", moving.getId(), Duration.ofMinutes(45), now.plusMinutes(50)); // Adjusted start time
 
         taskManager.addSubtask(packKitchen);
         taskManager.addSubtask(packBedroom);
 
-        packBedroom.setStatus(Status.DONE);
-        taskManager.updateSubtask(packBedroom);
     }
 
     private static void printAllTasks() {
         System.out.println("Задачи:");
-        for (Task task : taskManager.getTasks()) {
-            System.out.println(formatTask(task));
-        }
+        taskManager.getTasks().stream()
+                .map(Main::formatTask)
+                .forEach(System.out::println);
 
         System.out.println("Эпики:");
-        for (Epic epic : taskManager.getEpics()) {
+        taskManager.getEpics().forEach(epic -> {
             System.out.println(formatEpic(epic));
-            for (Subtask subtask : taskManager.getEpicSubtasks(epic)) {
-                System.out.println("--> " + formatSubtask(subtask));
-            }
-        }
+            taskManager.getEpicSubtasks(epic).stream()
+                    .map(Main::formatSubtask)
+                    .forEach(subtask -> System.out.println("--> " + subtask));
+        });
 
         System.out.println("Подзадачи:");
-        for (Subtask subtask : taskManager.getSubtasks()) {
-            System.out.println(formatSubtask(subtask));
-        }
+        taskManager.getSubtasks().stream()
+                .map(Main::formatSubtask)
+                .forEach(System.out::println);
     }
 
     private static String formatTask(Task task) {

@@ -118,11 +118,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String toString(Task task) {
         StringBuilder sb = new StringBuilder();
-        sb.append(task.getId()).append(",")
-                .append(task.getType()).append(",")
-                .append(task.getName()).append(",")
-                .append(task.getStatus()).append(",")
-                .append(task.getDescription()).append(",");
+        sb.append(task.getId()).append(",").append(task.getType()).append(",").append(task.getName()).append(",").append(task.getStatus()).append(",").append(task.getDescription()).append(",");
 
         if (task instanceof Subtask) {
             sb.append(((Subtask) task).getEpicID()).append(",");
@@ -130,8 +126,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             sb.append(",");
         }
 
-        sb.append(task.getDuration() != null ? task.getDuration().toMinutes() : 0).append(",")
-                .append(task.getStartTime() != null ? task.getStartTime() : "");
+        sb.append(task.getDuration() != null ? task.getDuration().toMinutes() : 0).append(",").append(task.getStartTime() != null ? task.getStartTime() : "");
 
         return sb.toString();
     }
@@ -140,14 +135,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
         try {
             List<String> lines = Files.readAllLines(file.toPath());
-            for (String line : lines.subList(1, lines.size())) {
-                Task task = fromString(line);
-                if (task instanceof Epic) {
-                    manager.addEpic((Epic) task);
-                } else if (task instanceof Subtask) {
-                    manager.addSubtask((Subtask) task);
-                } else {
-                    manager.addTask(task);
+            if (lines.size() > 1) {
+                for (String line : lines.subList(1, lines.size())) {
+                    Task task = fromString(line);
+                    if (task instanceof Epic) {
+                        manager.addEpic((Epic) task);
+                    } else if (task instanceof Subtask) {
+                        manager.addSubtask((Subtask) task);
+                    } else {
+                        manager.addTask(task);
+                    }
                 }
             }
         } catch (IOException e) {
