@@ -103,19 +103,19 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private final CustomLinkedList list = new CustomLinkedList();
 
-    // Добавление нового просмотра задачи в историю
+
     @Override
     public void add(Task task) {
         list.linkLast(task);
     }
 
-    // Удаление просмотра из истории
+
     @Override
     public void remove(int id) {
         list.removeNode(list.getNode(id));
     }
 
-    // Получение истории просмотров
+
     @Override
     public List<Task> getHistory() {
         return list.getTasks();

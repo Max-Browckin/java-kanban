@@ -1,6 +1,5 @@
 package manager;
 
-
 import model.Epic;
 import model.Subtask;
 import model.Task;
@@ -9,14 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
-
     Task addTask(Task task);
 
     Epic addEpic(Epic epic);
 
     Subtask addSubtask(Subtask subtask);
 
-    Task updateTask(Task task);
+    Task updateTask(Task updatedTask);
 
     Epic updateEpic(Epic epic);
 
@@ -50,4 +48,5 @@ public interface TaskManager {
 
     List<Task> getHistory();
 
+    List<Task> getPrioritizedTasks();
 }
