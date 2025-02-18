@@ -28,6 +28,7 @@ public class Task {
         this.duration = otherTask.getDuration();
         this.startTime = otherTask.getStartTime();
     }
+
     public Task(String name, String description, Duration duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
