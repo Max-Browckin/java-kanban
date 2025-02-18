@@ -1,9 +1,6 @@
 package manager;
 
-import manager.FileBackedTaskManager;
-import manager.TaskManagerTest;
 import model.Epic;
-import model.Status;
 import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.AfterEach;
@@ -48,7 +45,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         Epic epic = new Epic(10, "Test Epic", "Epic Description");
         taskManager.addEpic(epic);
 
-        // Ensure the subtask starts after the task ends
         Subtask subtask = new Subtask("Test Subtask", "Subtask Description", epic.getId(), Duration.ofMinutes(30), now.plusMinutes(40));
         taskManager.addSubtask(subtask);
 
@@ -64,7 +60,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         Task task = new Task("Test Task", "Description", Duration.ofMinutes(30), LocalDateTime.now());
         taskManager.addTask(task);
 
-
         List<String> lines = Files.readAllLines(file.toPath());
         assertEquals(2, lines.size());
         assertTrue(lines.get(1).contains("Test Task"));
@@ -76,19 +71,19 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         taskManager.addTask(task);
         taskManager.deleteTaskByID(task.getId());
 
-
         List<String> lines = Files.readAllLines(file.toPath());
         assertEquals(1, lines.size());
     }
 
     @Test
     public void testUpdateTaskAndCheckFileContent() throws IOException {
-        Task task = new Task("Test Task", "Description", Duration.ofMinutes(30), LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+
+        Task task = new Task("Test Task", "Description", Duration.ofMinutes(30), now);
         taskManager.addTask(task);
 
         task.setDescription("Updated Description");
         taskManager.updateTask(task);
-
 
         List<String> lines = Files.readAllLines(file.toPath());
         assertTrue(lines.get(1).contains("Updated Description"));

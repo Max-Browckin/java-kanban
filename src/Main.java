@@ -30,15 +30,14 @@ public class Main {
         taskManager.addTask(createToDoList);
 
         Epic moving = new Epic(10, "Переезд", "Нужно успеть до конца месяца");
-        taskManager.addEpic(moving);
+        taskManager.addEpic(moving);  // Epic with ID 10 added
 
-
-        Subtask packKitchen = new Subtask("Упаковать кухню", "В отдельные коробки", moving.getId(), Duration.ofMinutes(30), now.plusMinutes(10));
-        Subtask packBedroom = new Subtask("Упаковать спальню", "В большие коробки", moving.getId(), Duration.ofMinutes(45), now.plusMinutes(50)); // Adjusted start time
+        // Adjust start times for subtasks to avoid overlaps.  Make sure they don't overlap with main tasks either
+        Subtask packKitchen = new Subtask("Упаковать кухню", "В отдельные коробки", moving.getId(), Duration.ofMinutes(30), now.plusMinutes(65));
+        Subtask packBedroom = new Subtask("Упаковать спальню", "В большие коробки", moving.getId(), Duration.ofMinutes(30), now.plusMinutes(95));
 
         taskManager.addSubtask(packKitchen);
         taskManager.addSubtask(packBedroom);
-
     }
 
     private static void printAllTasks() {
@@ -82,11 +81,11 @@ public class Main {
     private static void printViewHistory() {
         taskManager.getTaskByID(1);
         taskManager.getTaskByID(2);
-        taskManager.getEpicByID(3);
+        taskManager.getEpicByID(10); // Changed to 10, based on the epic creation above.
         taskManager.getTaskByID(1);
         taskManager.getSubtaskByID(4);
         taskManager.getSubtaskByID(5);
-        taskManager.getEpicByID(3);
+        taskManager.getEpicByID(10); // Changed to 10
         taskManager.getSubtaskByID(4);
         taskManager.getTaskByID(2);
         taskManager.getSubtaskByID(5);
