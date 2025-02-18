@@ -9,9 +9,6 @@ import java.util.Objects;
 
 public class Epic extends Task {
     private ArrayList<Subtask> subtaskList = new ArrayList<>();
-    private Duration duration;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
 
     public Epic(int id, String name, String description) {
         super(id, name, description);
@@ -47,7 +44,6 @@ public class Epic extends Task {
     private void updateEpicDetails() {
         this.duration = Duration.ZERO;
         this.startTime = null;
-        this.endTime = null;
 
         if (!subtaskList.isEmpty()) {
             LocalDateTime earliestStart = null;
@@ -68,20 +64,8 @@ public class Epic extends Task {
             }
 
             this.startTime = earliestStart;
-            this.endTime = latestEnd;
+
         }
-    }
-
-    public Duration getDuration() {
-        return duration;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
     }
 
     @Override
@@ -94,9 +78,10 @@ public class Epic extends Task {
                 ", status=" + getStatus() +
                 ", duration=" + duration +
                 ", startTime=" + startTime +
-                ", endTime=" + endTime +
+                ", endTime=" + getEndTime() +
                 '}';
     }
+
 
     @Override
     public boolean equals(Object obj) {

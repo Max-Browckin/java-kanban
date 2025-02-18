@@ -13,6 +13,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Epic> epics = new HashMap<>();
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
     private final HistoryManager historyManager;
+    private final Set<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())));
     private int nextID = 1;
 
     public InMemoryTaskManager() {
@@ -31,6 +32,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         task.setId(getNextID());
         tasks.put(task.getId(), task);
+        prioritizedTasks.add(task);
         return task;
     }
 
@@ -57,6 +59,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         epic.addSubtask(subtask);
         subtasks.put(subtask.getId(), subtask);
+        prioritizedTasks.add(subtask);
         updateEpicStatus(epic);
         return subtask;
     }
@@ -67,11 +70,14 @@ public class InMemoryTaskManager implements TaskManager {
         Task existingTask = getTaskByID(updatedTask.getId());
         if (existingTask != null) {
             tasks.remove(existingTask.getId());
+            prioritizedTasks.remove(existingTask);
             if (isOverlapping(updatedTask)) {
                 tasks.put(existingTask.getId(), existingTask);
+                prioritizedTasks.add(existingTask);
                 throw new IllegalArgumentException("Task overlaps with existing task");
             }
             tasks.put(updatedTask.getId(), updatedTask);
+            prioritizedTasks.add(updatedTask);
         }
         return existingTask;
     }
@@ -99,14 +105,17 @@ public class InMemoryTaskManager implements TaskManager {
 
         epic.getSubtaskList().remove(oldSubtask);
         subtasks.remove(subtaskID);
+        prioritizedTasks.remove(oldSubtask);
 
         if (isOverlapping(subtask)) {
             epic.getSubtaskList().add(oldSubtask);
             subtasks.put(subtaskID, oldSubtask);
+            prioritizedTasks.add(oldSubtask);
             throw new IllegalArgumentException("Subtask overlaps with existing task");
         }
 
         subtasks.put(subtaskID, subtask);
+        prioritizedTasks.add(subtask);
         epic.addSubtask(subtask);
         updateEpicStatus(epic);
         return subtask;
@@ -162,17 +171,20 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTasks() {
         tasks.clear();
+        prioritizedTasks.clear();
     }
 
     @Override
     public void deleteEpics() {
         epics.clear();
         subtasks.clear();
+        prioritizedTasks.clear();
     }
 
     @Override
     public void deleteSubtasks() {
         subtasks.clear();
+        prioritizedTasks.clear();
         for (Epic epic : epics.values()) {
             epic.clearSubtasks();
             epic.setStatus(Status.NEW);
@@ -181,7 +193,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskByID(int id) {
-        tasks.remove(id);
+        Task task = tasks.remove(id);
+        if (task != null) {
+            prioritizedTasks.remove(task);
+        }
     }
 
     @Override
@@ -192,9 +207,9 @@ public class InMemoryTaskManager implements TaskManager {
             epics.remove(id);
             for (Subtask subtask : epicSubtasks) {
                 subtasks.remove(subtask.getId());
+                prioritizedTasks.remove(subtask);
             }
         }
-
     }
 
     @Override
@@ -203,6 +218,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (subtask != null) {
             int epicID = subtask.getEpicID();
             subtasks.remove(id);
+            prioritizedTasks.remove(subtask);
             historyManager.remove(id);
             Epic epic = epics.get(epicID);
             if (epic != null) {
@@ -219,17 +235,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getPrioritizedTasks() {
-        PriorityQueue<Task> priorityQueue = new PriorityQueue<>(Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())));
-
-        priorityQueue.addAll(tasks.values());
-        priorityQueue.addAll(subtasks.values());
-
-        List<Task> prioritizedTasks = new ArrayList<>();
-        while (!priorityQueue.isEmpty()) {
-            prioritizedTasks.add(priorityQueue.poll());
-        }
-
-        return prioritizedTasks;
+        return new ArrayList<>(prioritizedTasks);
     }
 
     private boolean isOverlapping(Task newTask) {
