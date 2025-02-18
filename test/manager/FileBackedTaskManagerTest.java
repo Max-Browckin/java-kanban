@@ -27,7 +27,9 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
 
     @AfterEach
     public void tearDown() {
-        file.delete();
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
     @Override
@@ -91,7 +93,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
 
     @Test
     public void testLoadFromFileWithEmptyFile() throws IOException {
-
         file.createNewFile();
 
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(file);
