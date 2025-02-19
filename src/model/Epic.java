@@ -1,5 +1,9 @@
 package model;
 
+import tasktype.TaskType;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -8,15 +12,24 @@ public class Epic extends Task {
 
     public Epic(int id, String name, String description) {
         super(id, name, description);
-        // Статус NEW устанавливается по умолчанию в конструкторе родительского класса Task
+    }
+
+    public Epic(int id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+        super(id, name, description, status, duration, startTime);
+    }
+
+    public Epic(int id, String name, String description, Duration duration, LocalDateTime startTime) {
+        super(id, name, description, Status.NEW, duration, startTime);
     }
 
     public void addSubtask(Subtask subtask) {
         subtaskList.add(subtask);
+        updateEpicDetails();
     }
 
     public void clearSubtasks() {
         subtaskList.clear();
+        updateEpicDetails();
     }
 
     public ArrayList<Subtask> getSubtaskList() {
@@ -25,6 +38,34 @@ public class Epic extends Task {
 
     public void setSubtaskList(ArrayList<Subtask> subtaskList) {
         this.subtaskList = subtaskList;
+        updateEpicDetails();
+    }
+
+    private void updateEpicDetails() {
+        this.duration = Duration.ZERO;
+        this.startTime = null;
+
+        if (!subtaskList.isEmpty()) {
+            LocalDateTime earliestStart = null;
+            LocalDateTime latestEnd = null;
+
+            for (Subtask subtask : subtaskList) {
+                if (subtask.getStartTime() != null) {
+                    if (earliestStart == null || subtask.getStartTime().isBefore(earliestStart)) {
+                        earliestStart = subtask.getStartTime();
+                    }
+                    if (latestEnd == null || subtask.getEndTime().isAfter(latestEnd)) {
+                        latestEnd = subtask.getEndTime();
+                    }
+                }
+                if (subtask.getDuration() != null) {
+                    this.duration = this.duration.plus(subtask.getDuration());
+                }
+            }
+
+            this.startTime = earliestStart;
+
+        }
     }
 
     @Override
@@ -35,17 +76,17 @@ public class Epic extends Task {
                 ", id=" + getId() +
                 ", subtaskList.size=" + subtaskList.size() +
                 ", status=" + getStatus() +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Epic other = (Epic) obj;
         return getId() == other.getId();
     }
@@ -53,5 +94,10 @@ public class Epic extends Task {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 }
