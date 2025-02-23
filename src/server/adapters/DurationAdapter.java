@@ -3,8 +3,6 @@ package server.adapters;
 import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class DurationAdapter implements JsonSerializer<Duration>, JsonDeserializer<Duration> {
     @Override
