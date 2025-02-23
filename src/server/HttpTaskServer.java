@@ -16,9 +16,10 @@ public class HttpTaskServer {
         this.taskManager = Managers.getDefault();
         this.httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
     }
-     public HttpTaskServer(TaskManager taskManager) throws IOException {
-            this.taskManager = taskManager;
-            this.httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
+
+    public HttpTaskServer(TaskManager taskManager) throws IOException {
+        this.taskManager = taskManager;
+        this.httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
 
         this.httpServer.createContext("/tasks", new TaskHandler(taskManager));
         this.httpServer.createContext("/subtasks", new SubtaskHandler(taskManager));
