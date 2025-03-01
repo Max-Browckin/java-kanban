@@ -143,20 +143,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             List<String> lines = Files.readAllLines(file.toPath());
             if (lines.size() > 1) {
-                // Сначала создаем эпики
                 for (String line : lines.subList(1, lines.size())) {
                     Task task = fromString(line);
                     if (task instanceof Epic) {
                         manager.addEpic((Epic) task);
+                        System.out.println("Loaded epic: " + task);
                     }
                 }
-                // Затем создаем подзадачи и задачи
+
                 for (String line : lines.subList(1, lines.size())) {
                     Task task = fromString(line);
                     if (task instanceof Subtask) {
                         manager.addSubtask((Subtask) task);
+                        System.out.println("Loaded subtask: " + task);
                     } else if (task instanceof Task && !(task instanceof Epic)) {
                         manager.addTask(task);
+                        System.out.println("Loaded task: " + task);
                     }
                 }
             }

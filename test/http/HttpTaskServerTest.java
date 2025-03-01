@@ -190,11 +190,9 @@ public class HttpTaskServerTest {
 
     @Test
     public void testAddSubtask() throws IOException, InterruptedException {
-        // Создаем эпик
         Epic epic = new Epic("Test Epic", "Test Description");
         manager.addEpic(epic);
 
-        // Создаем подзадачу
         Subtask subtask = new Subtask("Test Subtask", "Test Description", epic.getId());
         subtask.setStatus(Status.NEW);
         subtask.setDuration(Duration.ofMinutes(30));
@@ -202,7 +200,6 @@ public class HttpTaskServerTest {
 
         String subtaskJson = gson.toJson(subtask);
 
-        // Отправляем POST-запрос
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/subtasks"))
@@ -212,10 +209,8 @@ public class HttpTaskServerTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        // Проверяем ответ
         assertEquals(201, response.statusCode(), "Ожидался статус 201 (Created)");
 
-        // Проверяем, что подзадача была добавлена
         List<Subtask> subtasks = manager.getSubtasks();
         assertNotNull(subtasks, "Список подзадач не должен быть null");
         assertEquals(1, subtasks.size(), "Ожидалась одна подзадача в списке");
@@ -224,18 +219,15 @@ public class HttpTaskServerTest {
 
     @Test
     public void testGetSubtask() throws IOException, InterruptedException {
-        // Создаем эпик
         Epic epic = new Epic("Test Epic", "Test Description");
         manager.addEpic(epic);
 
-        // Создаем подзадачу
         Subtask subtask = new Subtask("Test Subtask", "Test Description", epic.getId());
         subtask.setStatus(Status.NEW);
         subtask.setDuration(Duration.ofMinutes(30));
         subtask.setStartTime(LocalDateTime.now());
         manager.addSubtask(subtask);
 
-        // Отправляем GET-запрос
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/subtasks/" + subtask.getId()))
@@ -244,10 +236,8 @@ public class HttpTaskServerTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        // Проверяем ответ
         assertEquals(200, response.statusCode(), "Ожидался статус 200 (OK)");
 
-        // Проверяем, что подзадача была возвращена
         Subtask returnedSubtask = gson.fromJson(response.body(), Subtask.class);
         assertNotNull(returnedSubtask, "Подзадача не должна быть null");
         assertEquals(subtask.getName(), returnedSubtask.getName(), "Название подзадачи не совпадает");
@@ -257,16 +247,13 @@ public class HttpTaskServerTest {
 
     @Test
     public void testDeleteSubtask() throws IOException, InterruptedException {
-        // Создаем эпик
         Epic epic = new Epic("Test Epic", "Test Description");
         manager.addEpic(epic);
 
-        // Создаем подзадачу
         Subtask subtask = new Subtask("Test Subtask", "Test Description", epic.getId());
         subtask.setStatus(Status.NEW);
         manager.addSubtask(subtask);
 
-        // Отправляем DELETE-запрос
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/subtasks/" + subtask.getId()))
@@ -275,10 +262,8 @@ public class HttpTaskServerTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        // Проверяем ответ
         assertEquals(200, response.statusCode(), "Ожидался статус 200 (OK)");
 
-        // Проверяем, что подзадача была удалена
         assertNull(manager.getSubtaskByID(subtask.getId()), "Подзадача должна быть удалена");
     }
 

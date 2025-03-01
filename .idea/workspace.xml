@@ -5,13 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="845d99e3-6efe-46f9-860b-4b12ce6a16e6" name="Changes" comment="sprint_9-solution-http-api">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manager/FileBackedTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/manager/FileBackedTaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manager/InMemoryHistoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/manager/InMemoryHistoryManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Epic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Epic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Subtask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Subtask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/EpicHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/EpicHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/SubtaskHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/SubtaskHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/http/HttpTaskServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/http/HttpTaskServerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -148,7 +141,7 @@
       <command value="mvn clean test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.HttpTaskServerTest">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -229,8 +222,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.HttpTaskServerTest" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.HttpTaskServerTest.testAddTask" />
         <item itemvalue="JUnit.HttpTaskServerTest.testUpdateSubtask" />
         <item itemvalue="JUnit.HttpTaskServerTest.testAddSubtask" />
@@ -542,7 +535,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740830811952</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="sprint_9-solution-http-api">
+      <option name="closed" value="true" />
+      <created>1740839603730</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1740839603730</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
