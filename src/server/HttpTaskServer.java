@@ -1,7 +1,6 @@
 package server;
 
 import com.sun.net.httpserver.HttpServer;
-import manager.Managers;
 import manager.TaskManager;
 
 import java.io.IOException;
@@ -11,11 +10,6 @@ public class HttpTaskServer {
     private static final int PORT = 8080;
     private final HttpServer httpServer;
     private final TaskManager taskManager;
-
-    public HttpTaskServer() throws IOException {
-        this.taskManager = Managers.getDefault();
-        this.httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
-    }
 
     public HttpTaskServer(TaskManager taskManager) throws IOException {
         this.taskManager = taskManager;
@@ -36,10 +30,5 @@ public class HttpTaskServer {
     public void stop() {
         httpServer.stop(0);
         System.out.println("HTTP-сервер остановлен");
-    }
-
-    public static void main(String[] args) throws IOException {
-        HttpTaskServer server = new HttpTaskServer();
-        server.start();
     }
 }

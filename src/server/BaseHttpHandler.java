@@ -2,16 +2,22 @@ package server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import server.adapters.DurationAdapter;
+import server.adapters.LocalDateTimeAdapter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public abstract class BaseHttpHandler implements HttpHandler {
     protected final Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
+            .registerTypeAdapter(Duration.class, new DurationAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
 
     @Override
@@ -28,6 +34,18 @@ public abstract class BaseHttpHandler implements HttpHandler {
 
     protected void sendNotFound(HttpExchange exchange) throws IOException {
         sendText(exchange, "Not Found", 404);
+    }
+
+    protected void sendNotFound(HttpExchange exchange, String message) throws IOException {
+        sendText(exchange, message, 404);
+    }
+
+    protected void sendBadRequest(HttpExchange exchange, String message) throws IOException {
+        sendText(exchange, message, 400);
+    }
+
+    protected void sendHasInteractions(HttpExchange exchange) throws IOException {
+        sendText(exchange, "Task overlaps with existing tasks", 406);
     }
 
     protected void sendInternalError(HttpExchange exchange) throws IOException {

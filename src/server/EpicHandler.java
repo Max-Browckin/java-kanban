@@ -7,10 +7,8 @@ import model.Epic;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public class EpicHandler extends BaseHttpHandler {
-    private static final Logger logger = Logger.getLogger(EpicHandler.class.getName());
     private final TaskManager taskManager;
 
     public EpicHandler(TaskManager taskManager) {
@@ -26,49 +24,58 @@ public class EpicHandler extends BaseHttpHandler {
 
             switch (method) {
                 case "GET":
-                    if (pathParts.length == 2) {
-                        ArrayList<Epic> epics = taskManager.getEpics();
-                        sendText(exchange, gson.toJson(epics), 200);
-                    } else if (pathParts.length == 3) {
-                        int id = Integer.parseInt(pathParts[2]);
-                        Epic epic = taskManager.getEpicByID(id);
-                        if (epic != null) {
-                            sendText(exchange, gson.toJson(epic), 200);
-                        } else {
-                            sendNotFound(exchange);
-                        }
-                    }
+                    handleGetRequest(exchange, pathParts);
                     break;
                 case "POST":
-                    String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                    Epic epic = gson.fromJson(body, Epic.class);
-                    if (epic.getId() == 0) {
-                        taskManager.addEpic(epic);
-                        sendText(exchange, "Epic added", 201);
-                    } else {
-                        taskManager.updateEpic(epic);
-                        sendText(exchange, "Epic updated", 201);
-                    }
+                    handlePostRequest(exchange);
                     break;
                 case "DELETE":
-                    if (pathParts.length == 2) {
-                        taskManager.deleteEpics();
-                        sendText(exchange, "All epics deleted", 200);
-                    } else if (pathParts.length == 3) {
-                        int id = Integer.parseInt(pathParts[2]);
-                        taskManager.deleteEpicByID(id);
-                        sendText(exchange, "Epic deleted", 200);
-                    }
+                    handleDeleteRequest(exchange, pathParts);
                     break;
                 default:
                     sendNotFound(exchange);
             }
-        } catch (NumberFormatException e) {
-            logger.severe("Invalid ID format: " + e.getMessage());
-            sendText(exchange, "Invalid ID format", 400);
         } catch (Exception e) {
-            logger.severe("Error handling request: " + e.getMessage());
+            e.printStackTrace();
             sendInternalError(exchange);
+        }
+    }
+
+    private void handleGetRequest(HttpExchange exchange, String[] pathParts) throws IOException {
+        if (pathParts.length == 2) {
+            ArrayList<Epic> epics = taskManager.getEpics();
+            sendText(exchange, gson.toJson(epics), 200);
+        } else if (pathParts.length == 3) {
+            int id = Integer.parseInt(pathParts[2]);
+            Epic epic = taskManager.getEpicByID(id);
+            if (epic != null) {
+                sendText(exchange, gson.toJson(epic), 200);
+            } else {
+                sendNotFound(exchange);
+            }
+        }
+    }
+
+    private void handlePostRequest(HttpExchange exchange) throws IOException {
+        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+        Epic epic = gson.fromJson(body, Epic.class);
+        if (epic.getId() == 0) {
+            taskManager.addEpic(epic);
+            sendText(exchange, gson.toJson(epic), 201);
+        } else {
+            taskManager.updateEpic(epic);
+            sendText(exchange, gson.toJson(epic), 200);
+        }
+    }
+
+    private void handleDeleteRequest(HttpExchange exchange, String[] pathParts) throws IOException {
+        if (pathParts.length == 2) {
+            taskManager.deleteEpics();
+            sendText(exchange, "All epics deleted", 200);
+        } else if (pathParts.length == 3) {
+            int id = Integer.parseInt(pathParts[2]);
+            taskManager.deleteEpicByID(id);
+            sendText(exchange, "Epic deleted", 200);
         }
     }
 }

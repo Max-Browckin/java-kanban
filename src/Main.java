@@ -5,6 +5,9 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Main {
 
     private static final TaskManager taskManager = Managers.getDefault();
@@ -16,22 +19,27 @@ public class Main {
     }
 
     private static void addTasks() {
-        Task packBoxes = new Task("Упаковать вещи", "В коробки и мешки");
+        Task packBoxes = new Task("Упаковать вещи", "В коробки и мешки", Duration.ofMinutes(30), LocalDateTime.now());
         taskManager.addTask(packBoxes);
 
-        Task packBoxesToUpdate = new Task(packBoxes.getId(),  "Упаковать вещи быстро", "В коробки и мешки",
-                Status.IN_PROGRESS);
+        Task packBoxesToUpdate = new Task(packBoxes.getId(), "Упаковать вещи быстро", "В коробки и мешки",
+                Status.IN_PROGRESS, Duration.ofMinutes(30), LocalDateTime.now());
         taskManager.updateTask(packBoxesToUpdate);
-        taskManager.addTask(new Task("Придумать список дел после перезда", "Список в заметках"));
 
-        Epic moving = new Epic(10, "Переезд", "Нужно успеть до конца месяца");
+        Task planTasks = new Task("Придумать список дел после переезда", "Список в заметках", Duration.ofMinutes(60), LocalDateTime.now().plusHours(1));
+        taskManager.addTask(planTasks);
+
+        Epic moving = new Epic("Переезд", "Нужно успеть до конца месяца");
         taskManager.addEpic(moving);
-        Subtask packKitchen = new Subtask("Упаковать кухню", "В отдельные коробки",
-                moving.getId());
-        Subtask packBedroom = new Subtask("Упаковать спальню", "В большие коробки",
-                moving.getId());
+
+        Subtask packKitchen = new Subtask("Упаковать кухню", "В отдельные коробки", moving.getId(),
+                Duration.ofMinutes(120), LocalDateTime.now().plusHours(2));
         taskManager.addSubtask(packKitchen);
+
+        Subtask packBedroom = new Subtask("Упаковать спальню", "В большие коробки", moving.getId(),
+                Duration.ofMinutes(90), LocalDateTime.now().plusHours(3));
         taskManager.addSubtask(packBedroom);
+
         packBedroom.setStatus(Status.DONE);
         taskManager.updateSubtask(packBedroom);
     }

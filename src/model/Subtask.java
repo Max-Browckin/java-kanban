@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import tasktype.TaskType;
 
 import java.time.Duration;
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
+    @Expose
     private final int epicID;
 
     public Subtask(String name, String description, int epicID) {
@@ -36,8 +38,9 @@ public class Subtask extends Task {
                 ", id=" + getId() +
                 ", epicID=" + epicID +
                 ", status=" + getStatus() +
-                ", duration=" + getDuration() +
-                ", startTime=" + getStartTime() +
+                ", duration=" + (getDuration() != null ? getDuration().toMinutes() + " minutes" : "null") +
+                ", startTime=" + (getStartTime() != null ? getStartTime().format(formatter) : "null") +
+                ", endTime=" + (getEndTime() != null ? getEndTime().format(formatter) : "null") +
                 '}';
     }
 

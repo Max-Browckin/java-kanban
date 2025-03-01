@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="845d99e3-6efe-46f9-860b-4b12ce6a16e6" name="Changes" comment="correcting errors" />
+    <list default="true" id="845d99e3-6efe-46f9-860b-4b12ce6a16e6" name="Changes" comment="sprint_9-solution-http-api">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manager/FileBackedTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/manager/FileBackedTaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Epic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Epic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Subtask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Subtask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/BaseHttpHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/BaseHttpHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/EpicHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/EpicHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/HistoryHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/HistoryHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/HttpTaskServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/HttpTaskServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/PrioritizedHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/PrioritizedHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/SubtaskHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/SubtaskHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/TaskHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/TaskHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/http/HttpTaskServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/http/HttpTaskServerTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,64 +70,66 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.HttpTaskServer.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "true",
-    "JUnit.EpicTest.executor": "Run",
-    "JUnit.EpicTest.testAddEpicAsSubtask.executor": "Debug",
-    "JUnit.FileBackedTaskManagerTest.executor": "Run",
-    "JUnit.FileBackedTaskManagerTest.saveAndLoadMultipleTasks.executor": "Run",
-    "JUnit.FileBackedTaskManagerTest.testAddTask.executor": "Run",
-    "JUnit.FileBackedTaskManagerTest.testEpicStatusCalculation.executor": "Run",
-    "JUnit.FileBackedTaskManagerTest.testGetPrioritizedTasks.executor": "Run",
-    "JUnit.FileBackedTaskManagerTest.testLoadFromFileWithEmptyFile.executor": "Run",
-    "JUnit.FileBackedTaskManagerTest.testSaveAndLoadFromFile.executor": "Run",
-    "JUnit.FileBackedTasksManagerTest.deleteTaskShouldRemoveTaskFromFile.executor": "Run",
-    "JUnit.FileBackedTasksManagerTest.executor": "Run",
-    "JUnit.FileBackedTasksManagerTest.saveAndLoadMultipleTasks.executor": "Run",
-    "JUnit.HttpTaskServerTest.executor": "Run",
-    "JUnit.HttpTaskServerTest.testAddTask.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.getHistoryShouldReturnListOf10Tasks.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.getHistoryShouldReturnOldEpicAfterUpdate.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.getHistoryShouldReturnOldSubtaskAfterUpdate.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.getHistoryShouldReturnOldTaskAfterUpdate.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.shouldMaintainDataIntegrityAfterTaskFieldUpdate.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.shouldNotHaveInvalidSubtaskIdsInEpic.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.shouldNotRetainOldIdInDeletedSubtask.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.testGetTaskByIDAddsToHistory.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.testUpdateTaskUpdatesTaskAndAddsOldVersionToHistory.executor": "Run",
-    "JUnit.InMemoryTaskManagerTest.executor": "Run",
-    "JUnit.ManagersTest.executor": "Run",
-    "JUnit.SubtaskTest.SubtasksWithEqualEpicIDShouldBeEqual.executor": "Run",
-    "JUnit.SubtaskTest.constructorWithAllParamsShouldSetAllFields.executor": "Run",
-    "JUnit.SubtaskTest.constructorWithEpicIDShouldSetEpicID.executor": "Run",
-    "JUnit.SubtaskTest.executor": "Run",
-    "JUnit.SubtaskTest.toStringShouldReturnCorrectString.executor": "Run",
-    "JUnit.TaskManagerTest.executor": "Run",
-    "JUnit.TaskManagerTest.testAddTask.executor": "Run",
-    "JUnit.TaskTest.executor": "Run",
-    "Maven. [clean,test].executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "create.test.in.the.same.root": "true",
-    "git-widget-placeholder": "sprint__9-solution-http-api",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "C:/Users/Pe/Desktop/Курсы JAVA/java-kanban/src/model",
-    "last_opened_file_path": "C:/Users/Pe/Downloads/gson-2.9.0.jar",
-    "onboarding.tips.debug.path": "C:/Users/Pe/Desktop/Курсы JAVA/java-kanban/addmaven/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propCompiler"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.HttpTaskServer.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
+    &quot;JUnit.EpicTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.EpicTest.testAddEpicAsSubtask.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.FileBackedTaskManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileBackedTaskManagerTest.saveAndLoadMultipleTasks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileBackedTaskManagerTest.testAddTask.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileBackedTaskManagerTest.testEpicStatusCalculation.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileBackedTaskManagerTest.testGetPrioritizedTasks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileBackedTaskManagerTest.testLoadFromFileWithEmptyFile.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileBackedTaskManagerTest.testSaveAndLoadFromFile.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileBackedTasksManagerTest.deleteTaskShouldRemoveTaskFromFile.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileBackedTasksManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileBackedTasksManagerTest.saveAndLoadMultipleTasks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HttpTaskServerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HttpTaskServerTest.testAddSubtask.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HttpTaskServerTest.testAddTask.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HttpTaskServerTest.testUpdateSubtask.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.getHistoryShouldReturnListOf10Tasks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.getHistoryShouldReturnOldEpicAfterUpdate.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.getHistoryShouldReturnOldSubtaskAfterUpdate.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.getHistoryShouldReturnOldTaskAfterUpdate.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.shouldMaintainDataIntegrityAfterTaskFieldUpdate.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.shouldNotHaveInvalidSubtaskIdsInEpic.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.shouldNotRetainOldIdInDeletedSubtask.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.testGetTaskByIDAddsToHistory.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.testUpdateTaskUpdatesTaskAndAddsOldVersionToHistory.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryTaskManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ManagersTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SubtaskTest.SubtasksWithEqualEpicIDShouldBeEqual.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SubtaskTest.constructorWithAllParamsShouldSetAllFields.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SubtaskTest.constructorWithEpicIDShouldSetEpicID.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SubtaskTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SubtaskTest.toStringShouldReturnCorrectString.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TaskManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TaskManagerTest.testAddTask.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TaskTest.executor&quot;: &quot;Run&quot;,
+    &quot;Maven. [clean,test].executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;#4 on sprint__9-solution-http-api&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/Pe/Desktop/Курсы JAVA/java-kanban/src/model&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Pe/Downloads/gson-2.9.0.jar&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Pe/Desktop/Курсы JAVA/java-kanban/addmaven/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propCompiler&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -137,20 +154,7 @@
       <command value="mvn clean test" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.HttpTaskServerTest">
-    <configuration name="HttpTaskServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="server.HttpTaskServer" />
-      <module name="java-kanban" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="server.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -174,6 +178,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="HttpTaskServerTest.testAddSubtask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="http.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="http" />
+      <option name="MAIN_CLASS_NAME" value="http.HttpTaskServerTest" />
+      <option name="METHOD_NAME" value="testAddSubtask" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="HttpTaskServerTest.testAddTask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="java-kanban" />
       <extension name="coverage">
@@ -190,35 +210,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TaskTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="HttpTaskServerTest.testUpdateSubtask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="java-kanban" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="model.*" />
+          <option name="PATTERN" value="http.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="model" />
-      <option name="MAIN_CLASS_NAME" value="model.TaskTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="http" />
+      <option name="MAIN_CLASS_NAME" value="http.HttpTaskServerTest" />
+      <option name="METHOD_NAME" value="testUpdateSubtask" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.HttpTaskServer" />
       <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.HttpTaskServerTest.testUpdateSubtask" />
+      <item itemvalue="JUnit.HttpTaskServerTest.testAddSubtask" />
       <item itemvalue="JUnit.HttpTaskServerTest.testAddTask" />
       <item itemvalue="JUnit.HttpTaskServerTest" />
-      <item itemvalue="JUnit.TaskTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.HttpTaskServerTest" />
-        <item itemvalue="JUnit.HttpTaskServerTest.testAddTask" />
-        <item itemvalue="Application.HttpTaskServer" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.TaskTest" />
+        <item itemvalue="JUnit.HttpTaskServerTest" />
+        <item itemvalue="JUnit.HttpTaskServerTest.testUpdateSubtask" />
+        <item itemvalue="JUnit.HttpTaskServerTest.testAddSubtask" />
+        <item itemvalue="JUnit.HttpTaskServerTest.testAddTask" />
       </list>
     </recent_temporary>
   </component>
@@ -495,7 +516,31 @@
       <option name="project" value="LOCAL" />
       <updated>1740347599727</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="sprint_9-solution-http-api">
+      <option name="closed" value="true" />
+      <created>1740347642026</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1740347642026</updated>
+    </task>
+    <task id="LOCAL-00035" summary="sprint_9-solution-http-api">
+      <option name="closed" value="true" />
+      <created>1740347804363</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1740347804363</updated>
+    </task>
+    <task id="LOCAL-00036" summary="sprint_9-solution-http-api">
+      <option name="closed" value="true" />
+      <created>1740347858040</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1740347858040</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -531,6 +576,7 @@
     <MESSAGE value="solution time and duration" />
     <MESSAGE value="correcting errors and reducing the difficulty of getting to O(n)" />
     <MESSAGE value="correcting errors" />
-    <option name="LAST_COMMIT_MESSAGE" value="correcting errors" />
+    <MESSAGE value="sprint_9-solution-http-api" />
+    <option name="LAST_COMMIT_MESSAGE" value="sprint_9-solution-http-api" />
   </component>
 </project>

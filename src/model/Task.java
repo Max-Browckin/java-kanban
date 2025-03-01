@@ -1,18 +1,28 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import tasktype.TaskType;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
+    @Expose
     protected int id;
+    @Expose
     protected String name;
+    @Expose
     protected String description;
+    @Expose
     protected Status status;
+    @Expose
     protected Duration duration;
+    @Expose
     protected LocalDateTime startTime;
+
+    protected static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public Task(String name, String description) {
         this.name = name;
@@ -119,8 +129,9 @@ public class Task {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
-                ", duration=" + duration +
-                ", startTime=" + startTime +
+                ", duration=" + (duration != null ? duration.toMinutes() + " minutes" : "null") +
+                ", startTime=" + (startTime != null ? startTime.format(formatter) : "null") +
+                ", endTime=" + (getEndTime() != null ? getEndTime().format(formatter) : "null") +
                 '}';
     }
 

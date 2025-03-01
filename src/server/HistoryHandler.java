@@ -24,6 +24,7 @@ public class HistoryHandler extends BaseHttpHandler {
                 sendNotFound(exchange);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             sendInternalError(exchange);
         }
     }

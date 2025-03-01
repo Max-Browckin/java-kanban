@@ -24,55 +24,96 @@ public class SubtaskHandler extends BaseHttpHandler {
             String path = exchange.getRequestURI().getPath();
             String[] pathParts = path.split("/");
 
+            logger.info("Received " + method + " request for path: " + path);
+
             switch (method) {
                 case "GET":
-                    if (pathParts.length == 2) {
-                        ArrayList<Subtask> subtasks = taskManager.getSubtasks();
-                        sendText(exchange, gson.toJson(subtasks), 200);
-                    } else if (pathParts.length == 3) {
-                        int id = Integer.parseInt(pathParts[2]);
-                        Subtask subtask = taskManager.getSubtaskByID(id);
-                        if (subtask != null) {
-                            sendText(exchange, gson.toJson(subtask), 200);
-                        } else {
-                            sendNotFound(exchange);
-                        }
-                    }
+                    handleGetRequest(exchange, pathParts);
                     break;
                 case "POST":
-                    String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                    Subtask subtask = gson.fromJson(body, Subtask.class);
-                    if (subtask.getId() == 0) {
-                        if (taskManager.getEpicByID(subtask.getEpicID()) == null) {
-                            sendText(exchange, "Epic with ID " + subtask.getEpicID() + " does not exist", 404);
-                        } else {
-                            taskManager.addSubtask(subtask);
-                            sendText(exchange, "Subtask added", 201);
-                        }
-                    } else {
-                        taskManager.updateSubtask(subtask);
-                        sendText(exchange, "Subtask updated", 201);
-                    }
+                    handlePostRequest(exchange);
                     break;
                 case "DELETE":
-                    if (pathParts.length == 2) {
-                        taskManager.deleteSubtasks();
-                        sendText(exchange, "All subtasks deleted", 200);
-                    } else if (pathParts.length == 3) {
-                        int id = Integer.parseInt(pathParts[2]);
-                        taskManager.deleteSubtaskByID(id);
-                        sendText(exchange, "Subtask deleted", 200);
-                    }
+                    handleDeleteRequest(exchange, pathParts);
                     break;
                 default:
                     sendNotFound(exchange);
             }
-        } catch (NumberFormatException e) {
-            logger.severe("Invalid ID format: " + e.getMessage());
-            sendText(exchange, "Invalid ID format", 400);
         } catch (Exception e) {
             logger.severe("Error handling request: " + e.getMessage());
             sendInternalError(exchange);
+        }
+    }
+
+    private void handleGetRequest(HttpExchange exchange, String[] pathParts) throws IOException {
+        if (pathParts.length == 2) {
+            ArrayList<Subtask> subtasks = taskManager.getSubtasks();
+            logger.info("Returning all subtasks: " + subtasks.size());
+            sendText(exchange, gson.toJson(subtasks), 200);
+        } else if (pathParts.length == 3) {
+            int id = Integer.parseInt(pathParts[2]);
+            Subtask subtask = taskManager.getSubtaskByID(id);
+            if (subtask != null) {
+                logger.info("Returning subtask with ID: " + id);
+                sendText(exchange, gson.toJson(subtask), 200);
+            } else {
+                logger.warning("Subtask not found with ID: " + id);
+                sendNotFound(exchange, "Subtask not found with ID: " + id);
+            }
+        }
+    }
+
+    private void handlePostRequest(HttpExchange exchange) throws IOException {
+        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+        logger.info("Received POST request with body: " + body);
+
+        try {
+            Subtask subtask = gson.fromJson(body, Subtask.class);
+            if (subtask == null) {
+                logger.warning("Invalid subtask data received");
+                sendBadRequest(exchange, "Invalid subtask data");
+                return;
+            }
+
+            if (subtask.getId() == 0) {
+                if (taskManager.getEpicByID(subtask.getEpicID()) == null) {
+                    logger.warning("Epic not found with ID: " + subtask.getEpicID());
+                    sendNotFound(exchange, "Epic not found with ID: " + subtask.getEpicID());
+                    return;
+                }
+                try {
+                    taskManager.addSubtask(subtask);
+                    logger.info("Created new subtask with ID: " + subtask.getId());
+                    sendText(exchange, gson.toJson(subtask), 201);
+                } catch (IllegalArgumentException e) {
+                    sendHasInteractions(exchange);
+                }
+            } else {
+                if (taskManager.getSubtaskByID(subtask.getId()) == null) {
+                    logger.warning("Subtask not found with ID: " + subtask.getId());
+                    sendNotFound(exchange, "Subtask not found with ID: " + subtask.getId());
+                    return;
+                }
+                taskManager.updateSubtask(subtask);
+                logger.info("Updated subtask with ID: " + subtask.getId());
+                sendText(exchange, gson.toJson(subtask), 200);
+            }
+        } catch (Exception e) {
+            logger.severe("Error parsing subtask data: " + e.getMessage());
+            sendBadRequest(exchange, "Invalid JSON data");
+        }
+    }
+
+    private void handleDeleteRequest(HttpExchange exchange, String[] pathParts) throws IOException {
+        if (pathParts.length == 2) {
+            taskManager.deleteSubtasks();
+            logger.info("All subtasks deleted");
+            sendText(exchange, "All subtasks deleted", 200);
+        } else if (pathParts.length == 3) {
+            int id = Integer.parseInt(pathParts[2]);
+            taskManager.deleteSubtaskByID(id);
+            logger.info("Deleted subtask with ID: " + id);
+            sendText(exchange, "Subtask deleted", 200);
         }
     }
 }

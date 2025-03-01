@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -120,7 +121,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String toString(Task task) {
         StringBuilder sb = new StringBuilder();
-        sb.append(task.getId()).append(",").append(task.getType()).append(",").append(task.getName()).append(",").append(task.getStatus()).append(",").append(task.getDescription()).append(",");
+        sb.append(task.getId()).append(",")
+                .append(task.getType()).append(",")
+                .append(task.getName()).append(",")
+                .append(task.getStatus()).append(",")
+                .append(task.getDescription()).append(",");
 
         if (task instanceof Subtask) {
             sb.append(((Subtask) task).getEpicID()).append(",");
@@ -128,7 +133,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             sb.append(",");
         }
 
-        sb.append(task.getDuration() != null ? task.getDuration().toMinutes() : 0).append(",").append(task.getStartTime() != null ? task.getStartTime() : "");
+        sb.append(task.getDuration() != null ? task.getDuration().toMinutes() : 0).append(",")
+                .append(task.getStartTime() != null ? task.getStartTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : "");
 
         return sb.toString();
     }

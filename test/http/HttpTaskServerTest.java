@@ -13,8 +13,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.HttpTaskServer;
-import server.adapters.DurationAdapter; // Импорт адаптера Duration
+import server.adapters.DurationAdapter;
 import server.adapters.LocalDateTimeAdapter;
+
 
 import java.io.IOException;
 import java.net.URI;
@@ -39,7 +40,6 @@ public class HttpTaskServerTest {
         taskServer = new HttpTaskServer(manager);
         taskServer.start();
 
-
         gson = new GsonBuilder()
                 .registerTypeAdapter(Duration.class, new DurationAdapter())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -63,6 +63,7 @@ public class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tasks"))
                 .POST(HttpRequest.BodyPublishers.ofString(taskJson))
+                .header("Content-Type", "application/json")
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -102,7 +103,7 @@ public class HttpTaskServerTest {
 
     @Test
     public void testDeleteTask() throws IOException, InterruptedException {
-        Task task = new Task("Test Task", "Test Description");
+        Task task = new Task(1, "Test Task", "Test Description");
         task.setStatus(Status.NEW);
         manager.addTask(task);
 
@@ -121,13 +122,14 @@ public class HttpTaskServerTest {
 
     @Test
     public void testAddEpic() throws IOException, InterruptedException {
-        Epic epic = new Epic(1, "Test Epic", "Test Description");
+        Epic epic = new Epic("Test Epic", "Test Description");
         String epicJson = gson.toJson(epic);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/epics"))
                 .POST(HttpRequest.BodyPublishers.ofString(epicJson))
+                .header("Content-Type", "application/json")
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -142,7 +144,7 @@ public class HttpTaskServerTest {
 
     @Test
     public void testGetEpic() throws IOException, InterruptedException {
-        Epic epic = new Epic(1, "Test Epic", "Test Description");
+        Epic epic = new Epic("Test Epic", "Test Description");
         manager.addEpic(epic);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -162,7 +164,7 @@ public class HttpTaskServerTest {
 
     @Test
     public void testDeleteEpic() throws IOException, InterruptedException {
-        Epic epic = new Epic(1, "Test Epic", "Test Description");
+        Epic epic = new Epic("Test Epic", "Test Description");
         manager.addEpic(epic);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -180,18 +182,21 @@ public class HttpTaskServerTest {
 
     @Test
     public void testAddSubtask() throws IOException, InterruptedException {
-        Epic epic = new Epic(1, "Test Epic", "Test Description");
+        Epic epic = new Epic("Test Epic", "Test Description");
         manager.addEpic(epic);
 
         Subtask subtask = new Subtask("Test Subtask", "Test Description", epic.getId());
+        subtask.setStatus(Status.NEW);
         subtask.setDuration(Duration.ofMinutes(30));
         subtask.setStartTime(LocalDateTime.now());
+
         String subtaskJson = gson.toJson(subtask);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/subtasks"))
                 .POST(HttpRequest.BodyPublishers.ofString(subtaskJson))
+                .header("Content-Type", "application/json")
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -202,14 +207,16 @@ public class HttpTaskServerTest {
         assertNotNull(subtasks, "Список подзадач не должен быть null");
         assertEquals(1, subtasks.size(), "Ожидалась одна подзадача в списке");
         assertEquals("Test Subtask", subtasks.get(0).getName(), "Название подзадачи не совпадает");
+
     }
 
     @Test
     public void testGetSubtask() throws IOException, InterruptedException {
-        Epic epic = new Epic(1, "Test Epic", "Test Description");
+        Epic epic = new Epic("Test Epic", "Test Description");
         manager.addEpic(epic);
 
         Subtask subtask = new Subtask("Test Subtask", "Test Description", epic.getId());
+        subtask.setStatus(Status.NEW);
         subtask.setDuration(Duration.ofMinutes(30));
         subtask.setStartTime(LocalDateTime.now());
         manager.addSubtask(subtask);
@@ -233,10 +240,11 @@ public class HttpTaskServerTest {
 
     @Test
     public void testDeleteSubtask() throws IOException, InterruptedException {
-        Epic epic = new Epic(1, "Test Epic", "Test Description");
+        Epic epic = new Epic("Test Epic", "Test Description");
         manager.addEpic(epic);
 
         Subtask subtask = new Subtask("Test Subtask", "Test Description", epic.getId());
+        subtask.setStatus(Status.NEW);
         manager.addSubtask(subtask);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -253,11 +261,39 @@ public class HttpTaskServerTest {
     }
 
     @Test
+    public void testUpdateSubtask() throws IOException, InterruptedException {
+        Epic epic = new Epic("Test Epic", "Test Description");
+        manager.addEpic(epic);
+
+        Subtask subtask = new Subtask("Test Subtask", "Test Description", epic.getId());
+        subtask.setStatus(Status.NEW);
+        subtask.setDuration(Duration.ofMinutes(30));
+        subtask.setStartTime(LocalDateTime.now());
+        manager.addSubtask(subtask);
+
+        subtask.setDescription("Updated Description");
+        String subtaskJson = gson.toJson(subtask);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/subtasks"))
+                .POST(HttpRequest.BodyPublishers.ofString(subtaskJson))
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(200, response.statusCode(), "Ожидался статус 200 (OK)");
+
+        Subtask updatedSubtask = manager.getSubtaskByID(subtask.getId());
+        assertNotNull(updatedSubtask, "Подзадача не должна быть null");
+        assertEquals("Updated Description", updatedSubtask.getDescription(), "Описание подзадачи не обновлено");
+    }
+
+    @Test
     public void testGetHistory() throws IOException, InterruptedException {
         Task task1 = new Task("Task 1", "Description 1");
-        task1.setStatus(Status.NEW);
         Task task2 = new Task("Task 2", "Description 2");
-        task2.setStatus(Status.NEW);
         manager.addTask(task1);
         manager.addTask(task2);
 
@@ -274,7 +310,8 @@ public class HttpTaskServerTest {
 
         assertEquals(200, response.statusCode(), "Ожидался статус 200 (OK)");
 
-        List<Task> history = gson.fromJson(response.body(), new TypeToken<List<Task>>() {}.getType());
+        List<Task> history = gson.fromJson(response.body(), new TypeToken<List<Task>>() {
+        }.getType());
         assertNotNull(history, "История не должна быть null");
         assertEquals(2, history.size(), "Ожидалось две задачи в истории");
         assertEquals(task1.getName(), history.get(0).getName(), "Название первой задачи не совпадает");
