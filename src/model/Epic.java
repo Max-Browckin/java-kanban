@@ -1,22 +1,41 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Epic extends Task {
     private ArrayList<Subtask> subtaskList = new ArrayList<>();
 
     public Epic(int id, String name, String description) {
         super(id, name, description);
-        // Статус NEW устанавливается по умолчанию в конструкторе родительского класса Task
+    }
+
+    public Epic(String name, String description) {
+        super(name, description);
+    }
+
+    public Epic(int id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+        super(id, name, description, status, duration, startTime);
+    }
+
+    public Epic(int id, String name, String description, Duration duration, LocalDateTime startTime) {
+        super(id, name, description, Status.NEW, duration, startTime);
     }
 
     public void addSubtask(Subtask subtask) {
-        subtaskList.add(subtask);
+        if (subtask == null) {
+            throw new IllegalArgumentException("Subtask cannot be null");
+        }
+        if (!subtaskList.contains(subtask)) {
+            subtaskList.add(subtask);
+            updateEpicStatus();
+        }
     }
 
     public void clearSubtasks() {
         subtaskList.clear();
+        updateEpicStatus();
     }
 
     public ArrayList<Subtask> getSubtaskList() {
@@ -24,7 +43,57 @@ public class Epic extends Task {
     }
 
     public void setSubtaskList(ArrayList<Subtask> subtaskList) {
+        if (subtaskList == null) {
+            throw new IllegalArgumentException("Subtask list cannot be null");
+        }
         this.subtaskList = subtaskList;
+        updateEpicStatus();
+    }
+
+    private void updateEpicStatus() {
+        if (subtaskList.isEmpty()) {
+            this.setStatus(Status.NEW);
+            this.duration = Duration.ZERO;
+            this.startTime = null;
+            return;
+        }
+
+        LocalDateTime earliestStart = null;
+        LocalDateTime latestEnd = null;
+        Duration totalDuration = Duration.ZERO;
+        int doneCount = 0;
+        int newCount = 0;
+
+        for (Subtask subtask : subtaskList) {
+            if (subtask.getStartTime() != null) {
+                if (earliestStart == null || subtask.getStartTime().isBefore(earliestStart)) {
+                    earliestStart = subtask.getStartTime();
+                }
+                if (latestEnd == null || subtask.getEndTime().isAfter(latestEnd)) {
+                    latestEnd = subtask.getEndTime();
+                }
+            }
+            if (subtask.getDuration() != null) {
+                totalDuration = totalDuration.plus(subtask.getDuration());
+            }
+
+            if (subtask.getStatus() == Status.DONE) {
+                doneCount++;
+            } else if (subtask.getStatus() == Status.NEW) {
+                newCount++;
+            }
+        }
+
+        this.startTime = earliestStart;
+        this.duration = totalDuration;
+
+        if (doneCount == subtaskList.size()) {
+            this.setStatus(Status.DONE);
+        } else if (newCount == subtaskList.size()) {
+            this.setStatus(Status.NEW);
+        } else {
+            this.setStatus(Status.IN_PROGRESS);
+        }
     }
 
     @Override
@@ -33,25 +102,11 @@ public class Epic extends Task {
                 "name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", id=" + getId() +
-                ", subtaskList.size=" + subtaskList.size() +
+                ", subtaskList=" + subtaskList +
                 ", status=" + getStatus() +
+                ", duration=" + (getDuration() != null ? getDuration().toMinutes() + " minutes" : "null") +
+                ", startTime=" + (getStartTime() != null ? getStartTime().format(formatter) : "null") +
+                ", endTime=" + (getEndTime() != null ? getEndTime().format(formatter) : "null") +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        Epic other = (Epic) obj;
-        return getId() == other.getId();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
     }
 }
