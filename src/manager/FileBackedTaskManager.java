@@ -2,7 +2,6 @@ package manager;
 
 import exceptions.ManagerSaveException;
 import model.Epic;
-
 import model.Status;
 import model.Subtask;
 import model.Task;
@@ -144,13 +143,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             List<String> lines = Files.readAllLines(file.toPath());
             if (lines.size() > 1) {
+                // Сначала создаем эпики
                 for (String line : lines.subList(1, lines.size())) {
                     Task task = fromString(line);
                     if (task instanceof Epic) {
                         manager.addEpic((Epic) task);
-                    } else if (task instanceof Subtask) {
+                    }
+                }
+                // Затем создаем подзадачи и задачи
+                for (String line : lines.subList(1, lines.size())) {
+                    Task task = fromString(line);
+                    if (task instanceof Subtask) {
                         manager.addSubtask((Subtask) task);
-                    } else {
+                    } else if (task instanceof Task && !(task instanceof Epic)) {
                         manager.addTask(task);
                     }
                 }

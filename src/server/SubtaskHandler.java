@@ -1,5 +1,6 @@
 package server;
 
+import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import manager.TaskManager;
 import model.Subtask;
@@ -51,14 +52,19 @@ public class SubtaskHandler extends BaseHttpHandler {
             logger.info("Returning all subtasks: " + subtasks.size());
             sendText(exchange, gson.toJson(subtasks), 200);
         } else if (pathParts.length == 3) {
-            int id = Integer.parseInt(pathParts[2]);
-            Subtask subtask = taskManager.getSubtaskByID(id);
-            if (subtask != null) {
-                logger.info("Returning subtask with ID: " + id);
-                sendText(exchange, gson.toJson(subtask), 200);
-            } else {
-                logger.warning("Subtask not found with ID: " + id);
-                sendNotFound(exchange, "Subtask not found with ID: " + id);
+            try {
+                int id = Integer.parseInt(pathParts[2]);
+                Subtask subtask = taskManager.getSubtaskByID(id);
+                if (subtask != null) {
+                    logger.info("Returning subtask with ID: " + id);
+                    sendText(exchange, gson.toJson(subtask), 200);
+                } else {
+                    logger.warning("Subtask not found with ID: " + id);
+                    sendNotFound(exchange, "Subtask not found with ID: " + id);
+                }
+            } catch (NumberFormatException e) {
+                logger.warning("Invalid subtask ID format: " + pathParts[2]);
+                sendBadRequest(exchange, "Invalid subtask ID format");
             }
         }
     }
@@ -98,9 +104,12 @@ public class SubtaskHandler extends BaseHttpHandler {
                 logger.info("Updated subtask with ID: " + subtask.getId());
                 sendText(exchange, gson.toJson(subtask), 200);
             }
-        } catch (Exception e) {
+        } catch (JsonSyntaxException e) {
             logger.severe("Error parsing subtask data: " + e.getMessage());
             sendBadRequest(exchange, "Invalid JSON data");
+        } catch (Exception e) {
+            logger.severe("Error handling request: " + e.getMessage());
+            sendInternalError(exchange);
         }
     }
 
@@ -110,10 +119,15 @@ public class SubtaskHandler extends BaseHttpHandler {
             logger.info("All subtasks deleted");
             sendText(exchange, "All subtasks deleted", 200);
         } else if (pathParts.length == 3) {
-            int id = Integer.parseInt(pathParts[2]);
-            taskManager.deleteSubtaskByID(id);
-            logger.info("Deleted subtask with ID: " + id);
-            sendText(exchange, "Subtask deleted", 200);
+            try {
+                int id = Integer.parseInt(pathParts[2]);
+                taskManager.deleteSubtaskByID(id);
+                logger.info("Deleted subtask with ID: " + id);
+                sendText(exchange, "Subtask deleted", 200);
+            } catch (NumberFormatException e) {
+                logger.warning("Invalid subtask ID format: " + pathParts[2]);
+                sendBadRequest(exchange, "Invalid subtask ID format");
+            }
         }
     }
 }

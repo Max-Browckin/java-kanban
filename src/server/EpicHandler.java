@@ -59,6 +59,11 @@ public class EpicHandler extends BaseHttpHandler {
     private void handlePostRequest(HttpExchange exchange) throws IOException {
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         Epic epic = gson.fromJson(body, Epic.class);
+        if (epic == null || epic.getName() == null || epic.getDescription() == null) {
+            sendBadRequest(exchange, "Invalid epic data");
+            return;
+        }
+
         if (epic.getId() == 0) {
             taskManager.addEpic(epic);
             sendText(exchange, gson.toJson(epic), 201);

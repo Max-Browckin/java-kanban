@@ -29,13 +29,13 @@ public class Epic extends Task {
         }
         if (!subtaskList.contains(subtask)) {
             subtaskList.add(subtask);
-            updateEpicDetails();
+            updateEpicStatus();
         }
     }
 
     public void clearSubtasks() {
         subtaskList.clear();
-        updateEpicDetails();
+        updateEpicStatus();
     }
 
     public ArrayList<Subtask> getSubtaskList() {
@@ -47,10 +47,10 @@ public class Epic extends Task {
             throw new IllegalArgumentException("Subtask list cannot be null");
         }
         this.subtaskList = subtaskList;
-        updateEpicDetails();
+        updateEpicStatus();
     }
 
-    private void updateEpicDetails() {
+    private void updateEpicStatus() {
         if (subtaskList.isEmpty()) {
             this.setStatus(Status.NEW);
             this.duration = Duration.ZERO;
