@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="845d99e3-6efe-46f9-860b-4b12ce6a16e6" name="Changes" comment="sprint_9-solution-http-api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manager/FileBackedTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/manager/FileBackedTaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/manager/FileBackedTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/manager/FileBackedTaskManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,11 +142,26 @@
       <command value="mvn clean test" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.HttpTaskServerTest">
+  <component name="RunManager" selected="JUnit.FileBackedTaskManagerTest">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="java-kanban" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileBackedTaskManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="manager.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="manager" />
+      <option name="MAIN_CLASS_NAME" value="manager.FileBackedTaskManagerTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -162,22 +177,6 @@
       <option name="PACKAGE_NAME" value="http" />
       <option name="MAIN_CLASS_NAME" value="http.HttpTaskServerTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HttpTaskServerTest.testAddSubtask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="java-kanban" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="http.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="http" />
-      <option name="MAIN_CLASS_NAME" value="http.HttpTaskServerTest" />
-      <option name="METHOD_NAME" value="testAddSubtask" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -216,18 +215,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.FileBackedTaskManagerTest" />
       <item itemvalue="JUnit.HttpTaskServerTest.testUpdateSubtask" />
-      <item itemvalue="JUnit.HttpTaskServerTest.testAddSubtask" />
       <item itemvalue="JUnit.HttpTaskServerTest.testAddTask" />
       <item itemvalue="JUnit.HttpTaskServerTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.FileBackedTaskManagerTest" />
         <item itemvalue="JUnit.HttpTaskServerTest" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.HttpTaskServerTest.testAddTask" />
         <item itemvalue="JUnit.HttpTaskServerTest.testUpdateSubtask" />
-        <item itemvalue="JUnit.HttpTaskServerTest.testAddSubtask" />
       </list>
     </recent_temporary>
   </component>
@@ -552,7 +551,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740840208644</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="sprint_9-solution-http-api">
+      <option name="closed" value="true" />
+      <created>1740840811088</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1740840811088</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

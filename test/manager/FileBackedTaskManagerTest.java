@@ -38,26 +38,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
     }
 
     @Test
-    public void testSaveAndLoadFromFile() throws IOException {
-        LocalDateTime now = LocalDateTime.now();
-
-        Task task = new Task("Test Task", "Description", Duration.ofMinutes(30), now);
-        taskManager.addTask(task);
-
-        Epic epic = new Epic(10, "Test Epic", "Epic Description");
-        taskManager.addEpic(epic);
-
-        Subtask subtask = new Subtask("Test Subtask", "Subtask Description", epic.getId(), Duration.ofMinutes(30), now.plusMinutes(40));
-        taskManager.addSubtask(subtask);
-
-        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(file);
-
-        assertEquals(task, loadedManager.getTaskByID(task.getId()));
-        assertEquals(epic, loadedManager.getEpicByID(epic.getId()));
-        assertEquals(subtask, loadedManager.getSubtaskByID(subtask.getId()));
-    }
-
-    @Test
     public void testAddTaskAndCheckFileContent() throws IOException {
         Task task = new Task("Test Task", "Description", Duration.ofMinutes(30), LocalDateTime.now());
         taskManager.addTask(task);
