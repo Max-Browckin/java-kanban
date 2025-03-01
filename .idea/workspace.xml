@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="845d99e3-6efe-46f9-860b-4b12ce6a16e6" name="Changes" comment="sprint_9-solution-http-api">
-      <change beforePath="$PROJECT_DIR$/test/http/HttpTaskServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/http/HttpTaskServerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manager/FileBackedTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/manager/FileBackedTaskManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -543,7 +544,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740839603730</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="sprint_9-solution-http-api">
+      <option name="closed" value="true" />
+      <created>1740840208644</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1740840208644</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
